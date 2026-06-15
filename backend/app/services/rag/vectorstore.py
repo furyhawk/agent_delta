@@ -204,9 +204,9 @@ class QdrantVectorStore(BaseVectorStore):
                 qdrant_filter = Filter(
                     must=[FieldCondition(key="parent_doc_id", match=MatchValue(value=m.group(1)))]
                 )
-        results = await self.client.search(
+        response = await self.client.query_points(
             collection_name=collection_name,
-            query_vector=query_vector,
+            query=query_vector,
             limit=limit,
             query_filter=qdrant_filter,
         )
@@ -217,7 +217,7 @@ class QdrantVectorStore(BaseVectorStore):
                 metadata=hit.payload.get("metadata", {}),
                 parent_doc_id=hit.payload.get("parent_doc_id"),
             )
-            for hit in results
+            for hit in response.points
         ]
 
     async def get_collection_info(self, collection_name: str) -> CollectionInfo:
