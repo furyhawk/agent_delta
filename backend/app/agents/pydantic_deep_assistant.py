@@ -41,7 +41,11 @@ logger = logging.getLogger(__name__)
 
 # Map LLM_PROVIDER settings value → pydantic-ai provider prefix
 _PROVIDER_PREFIXES: dict[str, str] = {
-    "openai": "openai",
+    # "openai-responses" uses OpenAI's Responses API (/v1/responses) which
+    # supports function tools with reasoning models (gpt-5+, o-series).
+    # The deprecated "openai" prefix uses Chat Completions (/v1/chat/completions)
+    # which does not support tools + reasoning_effort.
+    "openai": "openai-responses",
     "anthropic": "anthropic",
     "google": "google-gla",  # Google AI (Gemini) via GOOGLE_API_KEY
     "openrouter": "openrouter",
