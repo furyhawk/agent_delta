@@ -9,10 +9,14 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 def find_env_file() -> Path | None:
-    """Find .env file in current or parent directories."""
+    """Find .env file in current, parent, or backend/ subdirectory."""
     current = Path.cwd()
-    for path in [current, current.parent]:
-        env_file = path / ".env"
+    for candidate in [
+        current,
+        current.parent,
+        current / "backend",
+    ]:
+        env_file = candidate / ".env"
         if env_file.exists():
             return env_file
     return None

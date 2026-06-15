@@ -21,6 +21,7 @@ dependencies = [
     { name = "fastapi-cache2" },
     { name = "fastapi-pagination" },
     { name = "greenlet" },
+    { name = "httpx" },
     { name = "jinja2" },
     { name = "langchain-text-splitters" },
     { name = "logfire", extra = ["asyncpg", "fastapi", "redis"] },
@@ -62,6 +63,11 @@ dev = [
     { name = "ty" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "httpx" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "alembic", specifier = ">=1.18.0" },
@@ -73,6 +79,7 @@ requires-dist = [
     { name = "fastapi-cache2", specifier = ">=0.2.2" },
     { name = "fastapi-pagination", specifier = ">=0.12.31" },
     { name = "greenlet", specifier = ">=3.2.0" },
+    { name = "httpx", specifier = ">=0.28.1" },
     { name = "httpx", marker = "extra == 'dev'", specifier = ">=0.28.0" },
     { name = "jinja2", specifier = ">=3.1.0" },
     { name = "langchain-text-splitters", specifier = ">=0.4.0" },
@@ -110,6 +117,9 @@ requires-dist = [
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.43.0" },
 ]
 provides-extras = ["dev"]
+
+[package.metadata.requires-dev]
+dev = [{ name = "httpx", specifier = ">=0.28.1" }]
 
 [[package]]
 name = "aiofile"
