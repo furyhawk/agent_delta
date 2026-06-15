@@ -10,15 +10,12 @@ The unique ``(user_id, name)`` constraint prevents a user from shadowing a
 built-in's name with a custom command of the same name.
 """
 
-from __future__ import annotations
-
 import uuid
 from typing import TYPE_CHECKING
 
 from sqlalchemy import Boolean, Column, ForeignKey, Text, UniqueConstraint
 from sqlalchemy.dialects.postgresql import UUID as PG_UUID
-from sqlalchemy.orm import relationship
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field, Relationship, SQLModel
 
 from app.db.base import TimestampMixin
 
@@ -48,7 +45,7 @@ class UserSlashCommand(TimestampMixin, SQLModel, table=True):
     prompt: str | None = Field(default=None, sa_column=Column(Text, nullable=True))
     is_enabled: bool = Field(default=True, sa_column=Column(Boolean, nullable=False, default=True))
 
-    user: User = relationship("User", lazy="joined")
+    user: "User" = Relationship(sa_relationship_kwargs={"lazy": "joined"})
 
     def __repr__(self) -> str:
         kind = "custom" if self.prompt is not None else "builtin-override"
