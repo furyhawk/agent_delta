@@ -6,7 +6,7 @@ import tempfile
 from pathlib import Path
 from typing import Any
 
-from app.worker.broker import broker
+from app.worker.taskiq_app import broker
 
 logger = logging.getLogger(__name__)
 

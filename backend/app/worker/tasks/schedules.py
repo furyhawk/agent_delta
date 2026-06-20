@@ -1,6 +1,6 @@
 """Taskiq scheduled tasks (cron-like)."""
 
-from app.worker.broker import broker
+from app.worker.taskiq_app import broker
 from app.worker.tasks.rag_tasks import check_scheduled_syncs
 
 

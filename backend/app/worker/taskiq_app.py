@@ -2,13 +2,20 @@
 
 from taskiq import TaskiqScheduler
 from taskiq.schedule_sources import LabelScheduleSource
+from taskiq_redis import ListQueueBroker, RedisAsyncResultBackend
 
-from app.worker.broker import broker
-import app.worker.tasks  # noqa: F401 — register @broker.task decorated functions
-import app.worker.tasks.schedules  # noqa: F401 — register scheduled tasks
+from app.core.config import settings
+
+# Create Taskiq broker with Redis
+broker = ListQueueBroker(
+    url=settings.TASKIQ_BROKER_URL,
+).with_result_backend(
+    RedisAsyncResultBackend(
+        redis_url=settings.TASKIQ_RESULT_BACKEND,
+    )
+)
 
 # Create scheduler for periodic tasks
-# LabelScheduleSource auto-discovers @broker.task(schedule=[...]) decorated functions
 scheduler = TaskiqScheduler(
     broker=broker,
     sources=[LabelScheduleSource(broker)],
@@ -26,3 +33,6 @@ async def startup() -> None:
 async def shutdown() -> None:
     """Cleanup on shutdown."""
     pass
+
+
+import app.worker.tasks.schedules  # noqa: F401
